@@ -81,11 +81,18 @@ public class QRScannerView: UIView {
         setupImageViews()
     }
 
+    public func startScanning() {
+        metadataOutputEnable = true
+    }
+
+    public func stopScanning() {
+        metadataOutputEnable = false
+    }
+
     public func startRunning() {
         guard isAuthorized() else { return }
         guard !session.isRunning else { return }
         videoDataOutputEnable = false
-        metadataOutputEnable = true
         metadataQueue.async { [weak self] in
             self?.session.startRunning()
         }
@@ -110,7 +117,6 @@ public class QRScannerView: UIView {
         setupImageViews()
         qrCodeImage = nil
         videoDataOutputEnable = false
-        metadataOutputEnable = true
     }
 
     public func setTorchActive(isOn: Bool) {
@@ -232,7 +238,6 @@ public class QRScannerView: UIView {
         // start running
         if authorizationStatus() == .notDetermined {
             videoDataOutputEnable = false
-            metadataOutputEnable = true
             metadataQueue.async { [weak self] in
                 self?.session.startRunning()
             }
